@@ -1,7 +1,3 @@
-IAM_TOKEN = 't1.9euelZqSz83Pko3GyseMz5mXi4mcku3rnpWajc6WmM-Mlc-axs-UjY6Yksvl8_cLHmhO-e8sZFN5_N3z90tMZU757yxkU3n8zef1656Vmsiex8uXnYqLk8qVnp2dzpCP7_zF656Vmsiex8uXnYqLk8qVnp2dzpCPveuelZqWmcmTysyPmMqPzMqcjs2Mm7XehpzRnJCSj4qLmtGLmdKckJKPioua0pKai56bnoue0oye.AacSPWeTu9qRbcmUg8RG5UDla2ZDrEJPxXU9GCrFHdYdE3leMQXJw_oG6mOcgHk20M1O4pNFW4gXx3GBgPUfBw'
-FOLDER_ID = 'b1g6m8id5nb5e6q5vqv1'
-TOKEN = '6802015710:AAEtTwywOdf3ITfXkVHSIGHDsKDRneZBHtU'
-
 MAX_USERS = 3  # максимальное кол-во пользователей
 MAX_GPT_TOKENS = 120  # максимальное кол-во токенов в ответе GPT
 COUNT_LAST_MSG = 4  # кол-во последних сообщений из диалога

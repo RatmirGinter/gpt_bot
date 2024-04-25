@@ -26,12 +26,3 @@ def is_gpt_token_limit(messages, total_spent_tokens):
         return None, f"Превышен общий лимит GPT-токенов {MAX_USER_GPT_TOKENS}"
     return all_tokens, ""
 
-# проверяем, не превысил ли пользователь лимиты на преобразование аудио в текст
-def is_stt_block_limit(user_id, duration):
-        ...
-    # увидимся в следующих уроках =)
-
-# проверяем, не превысил ли пользователь лимиты на преобразование текста в аудио
-def is_tts_symbol_limit(user_id, text):
-        ...
-    # увидимся в следующих уроках =)

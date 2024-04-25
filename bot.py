@@ -1,7 +1,7 @@
 from validators import *  # модуль для валидации
 from ya_gpt import ask_gpt  # модуль для работы с GPT
 # подтягиваем константы из config файла
-from config import TOKEN, LOGS, COUNT_LAST_MSG
+from config import *
 # подтягиваем функции из database файла
 from database import create_database, add_message, select_n_last_messages
 from stt import *
@@ -19,6 +19,43 @@ logging.basicConfig(filename=LOGS, level=logging.ERROR, format="%(asctime)s FILE
 
 create_database()
 
+def is_stt_block_limit(message, duration):
+    user_id = message.from_user.id
+
+    # Переводим секунды в аудиоблоки
+    audio_blocks = math.ceil(duration / 15) # округляем в большую сторону
+    # Функция из БД для подсчёта всех потраченных пользователем аудиоблоков
+    all_blocks = count_all_limits(user_id,"stt_blocks") + audio_blocks
+
+    # Проверяем, что аудио длится меньше 30 секунд
+    if duration >= 30:
+        msg = "SpeechKit STT работает с голосовыми сообщениями меньше 30 секунд"
+        bot.send_message(user_id, msg)
+        return None
+
+    # Сравниваем all_blocks с количеством доступных пользователю аудиоблоков
+    if all_blocks >= MAX_USER_STT_BLOCKS:
+        msg = f"Превышен общий лимит SpeechKit STT {MAX_USER_STT_BLOCKS}. Использовано {all_blocks} блоков. Доступно: {MAX_USER_STT_BLOCKS - all_blocks}"
+        bot.send_message(user_id, msg)
+        return None
+
+    return audio_blocks
+
+def is_tts_symbol_limit(message, text):
+    user_id = message.from_user.id
+    text_symbols: int = len(text)
+    symbols: int = count_all_limits(user_id,"tts_symbols")
+
+    # Функция из БД для подсчёта всех потраченных пользователем символов
+    all_symbols = symbols + text_symbols
+
+    # Сравниваем all_symbols с количеством доступных пользователю символов
+    if all_symbols >= MAX_USER_TTS_SYMBOLS:
+        msg = f"Превышен общий лимит SpeechKit TTS {MAX_USER_TTS_SYMBOLS}. Использовано: {all_symbols} символов. Доступно: {MAX_USER_TTS_SYMBOLS - all_symbols}"
+        bot.send_message(user_id, msg)
+        return None
+
+    return len(text)
 # обрабатываем команду /start
 @bot.message_handler(commands=['start'])
 def start(message):
